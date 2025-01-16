@@ -9,7 +9,7 @@
             CurrentUser = await GetUserFromApiAsync();
         }
 
-        private async Task<User> GetUserFromApiAsync()
+        private static async Task<User> GetUserFromApiAsync()
         {
             await Task.Delay(1000);
             return new User

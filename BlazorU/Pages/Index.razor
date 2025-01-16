@@ -1,9 +1,48 @@
 ﻿@page "/"
+@using BlazorU.ApiRequest
+@using BlazorU.ApiRequest.Model
+@inject NavigationManager NavigationManager;
 
 <PageTitle>Index</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Авторизация</h1>
 
-Welcome to your new app.
+<div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
+    <form style="width: 23rem;">
+        <div class="form-outline mb-4">
+            <label class="form-label" for="form2Example28">Email</label>
+            <input type="password" @bind="@reqDataUser.Email" id="form2Example28" class="form-control form-control-lg" />
+        </div>
+        <div class="form-outline mb-4">
+            <label class="form-label" for="form2Example28">Password</label>
+            <input type="password" @bind="@reqDataUser.Password" id="form2Example28" class="form-control form-control-lg" />
+        </div>
+        <div class="form-outline mb-4">
+            <label class="form-label" for="form2Example28">Name</label>
+            <input type="password" @bind="@reqDataUser.Name" id="form2Example28" class="form-control form-control-lg" />
+        </div>
+        <div class="form-outline mb-4">
+            <label class="form-label" for="form2Example28">Description</label>
+            <input type="password" @bind="@reqDataUser.Description" id="form2Example28" class="form-control form-control-lg" />
+        </div>
+        <div class="pt-1 mb-4">
+            <button class="btn btn-info btn-lg btn-block" @onclick="NavURL1" type="button">Войти</button>
+        </div>
+    </form>
+</div>
+
+
+@code{
+
+    private ReqDataUser reqDataUser = new ReqDataUser();
+
+    private void NavURL1()
+    {
+        NavigationManager.NavigateTo("/counter");
+    }
+
+
+}
+
 
 <SurveyPrompt Title="How is Blazor working for you?" />

@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using BlazorU.ApiRequest.Model;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Http;
+using System.Xml.Linq;
+using BlazorU.ApiRequest.Services;
 
 namespace BlazorU.ApiRequest
 {
@@ -16,6 +18,9 @@ namespace BlazorU.ApiRequest
             _httpClient = httpClient;
             _logger = logger;
         }
+
+        
+
 
         public async Task<UserData> GetAllUsersAsync()
         {
@@ -70,5 +75,7 @@ namespace BlazorU.ApiRequest
                 return new UserAddData();
             }
         }
+
+
     }
 }
