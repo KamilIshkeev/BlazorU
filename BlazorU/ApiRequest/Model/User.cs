@@ -3,6 +3,7 @@
     public class UserDataShort
     {
         public int id_User { get; set; }
+        public string Email { get; set; }
         public string Name { get; set; }
         public string Descrioption { get; set; }
     }
