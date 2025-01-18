@@ -22,37 +22,6 @@ namespace BlazorU.ApiRequest
 
 
 
-        //public async Task<UserData> GetAllUsersAsync()
-        //{
-        //    var url = "api/UsersLogins/getAllUsers";
-
-        //    try
-        //    {
-        //        var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
-
-        //        response.EnsureSuccessStatusCode();
-
-        //        var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-        //        if (string.IsNullOrEmpty(responseContent))
-        //        {
-        //            _logger.LogWarning("Ответ от сервера пуст.");
-        //            return new UserData();
-        //        }
-
-        //        var usersData = JsonSerializer.Deserialize<UserData>(responseContent, new JsonSerializerOptions
-        //        {
-        //            PropertyNameCaseInsensitive = true
-        //        });
-
-        //        return usersData ?? new UserData();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Ошибка при запросе");
-        //        return new UserData();
-        //    }
-        //}
 
 
         public async Task<UserData> GetAllUsersAsync()

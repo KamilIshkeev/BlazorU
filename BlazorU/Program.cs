@@ -14,7 +14,9 @@ builder.RootComponents.Add<App>("#app");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5205/") });
 
+
 builder.Services.AddScoped<ApiRequestService>();
+builder.Services.AddScoped<PageVisibilityService>();
 
 
 await builder.Build().RunAsync();
