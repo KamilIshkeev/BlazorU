@@ -2,66 +2,17 @@
 @using BlazorU.ApiRequest
 @using BlazorU.ApiRequest.Model
 @inject HttpClient Http
-@inject PageVisibilityService PageVisibilityService
+@* @inject PageVisibilityService PageVisibilityService *@
 @using BlazorU.Pages
 @inject NavigationManager NavigationManager
-
+@inject IJSRuntime JS
 
 <PageTitle>Users list</PageTitle>
 
-@if (Pages.Index.chak.Role == "user")
-{
-	NavigationManager.NavigateTo("/home");
-}
-else
-{
 
- 
-<h1>Список</h1>
-
-<p class="text-center fw-bold mb-5 mx-1 mx-md-4 mt-4">
-    <table class="table table-bordered">
-        <thead class="alert-dark">
-            <tr>
-                <th>id_User</th>
-                <th>Email</th>
-                <th>Name</th>
-                <th>Descrioption</th>
-                <th>Role</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (users == null)
-            {
-                <tr>
-                    <td colspan="3" class="text-center">Loading...</td>
-                </tr>
-            }
-            else if (!users.Any())
-            {
-                <tr>
-                    <td colspan="3" class="text-center">No users found</td>
-                </tr>
-            }
-            else 
-            {
-                @foreach (var user in users)
-                {
-                    <tr>
-                        <td>@user.id_User</td>
-                        <td>@user.Email</td>
-                        <td>@user.Name</td>
-                        <td>@user.Descrioption</td>
-                        <td>@user.Role</td>
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
-</p>
-
-<h1>Добавление</h1>
-
+<h1>Авторизация/Регистрация</h1>
+<p>@message</p>
+@* <button @onclick="HideCounterPage">Hide Counter Page</button> *@
 
 <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
     <form style="width: 23rem;">
@@ -82,16 +33,20 @@ else
             <input type="password" @bind="@reqDataUser.Descrioption" id="form2Example28" class="form-control form-control-lg" />
         </div>
         <div class="pt-1 mb-4">
-            <button class="btn btn-info btn-lg btn-block" @onclick="AddNewUser" type="button">Add</button>
+            <button class="btn btn-info btn-lg btn-block" @onclick="CheckValue" type="button">Войти</button>
         </div>
     </form>
 </div>
 
 @code {
+    private string message = string.Empty;
     private List<UserDataShort> users;
     private ReqDataUser reqDataUser = new ReqDataUser();
 
+    public static ReqDataUser chak { get; set; }
     [Inject] private ApiRequestService ApiRequest { get; set; }
+
+
 
 
 
@@ -117,23 +72,71 @@ else
         await getAllUsers();
     }
 
-    // private void Auft()
-    // {
 
-    //     if (reqDataUser.Role == "user")
-    //     {
-    //         NavigationManager.NavigateTo("/");
-    //     }
-    //     else
-    //     {
-    //         NavigationManager.NavigateTo("/counter");
-    //     }
 
-    // }
+
+    private async Task CheckValue()
+    {
+        var email = reqDataUser.Email;
+        var pasw = reqDataUser.Password;
+
+
+
+
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            ShowAlert("Глаза разуй ты не ввёл email!");
+            return;
+        }
+        if (string.IsNullOrWhiteSpace(pasw))
+        {
+            ShowAlert("А пароль кто введёт?");
+            return;
+        }
+
+        var userExists = users.Any(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+        
+        if (userExists == true)
+        {
+            var userRol = users.FirstOrDefault(u => u.Email == email);
+            var rol = userRol.Role;
+            message = $"Ну что тебе повезло email: '{email}' уже существует!";
+
+            if (rol == "admin")
+            {
+                ShowAlert("Вход в админ панель");
+                
+                NavigationManager.NavigateTo("/admpanel");
+            }
+            else
+            {
+                ShowAlert("Хорошего вам настроения! Вход в кабинет");
+                
+                NavigationManager.NavigateTo("/fetchdata");
+            }
+        }
+        else 
+        {
+
+            message = $"Поздравляю твой аккаунт на этот email: '{email}' был только что создан!";
+            AddNewUser();
+            ShowAlert("Хорошего вам настроения! Вход в кабинет");
+                
+            NavigationManager.NavigateTo("/fetchdata");
+
+        }
+
+
+    }
+
+    private void ShowAlert(string message)
+    {
+        JS.InvokeVoidAsync("alert", message);
+    }
 
 }
 
-}
+
     
 
 
